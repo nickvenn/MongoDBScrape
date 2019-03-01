@@ -1,12 +1,14 @@
-var express = require("express");
-var logger = require("morgan");
-var mongoose = require("mongoose");
+
+const express = require("express");
+const logger = require("morgan");
+const mongoose = require("mongoose");
+const path = require('path');
 
 // Our scraping tools
 // Axios is a promised-based http library, similar to jQuery's Ajax method
 // It works on the client and on the server
-var axios = require("axios");
-var cheerio = require("cheerio");
+const axios = require("axios");
+const cheerio = require("cheerio");
 
 // Require all models
 var db = require("./models");
@@ -30,6 +32,9 @@ app.use(express.static("public"));
 mongoose.connect("mongodb://localhost/PremierLeagueNews", { useNewUrlParser: true });
 
 // Routes
+app.get("/", function(req, res){
+  res.sendFile(path.join(__dirname+'/index.html'));
+});
 
 // A GET route for scraping the echoJS website
 app.get("/scrape", function (req, res) {
