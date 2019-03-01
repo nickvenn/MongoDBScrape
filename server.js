@@ -41,14 +41,16 @@ app.get("/scrape", function (req, res) {
     var results = [];
 
     $("section.featuredArticle").each(function (i, element) {
-      var title = $(element).text();
-
+      var title = $(element).find("span.title").text();
+      var summary = $(element).find("span.text").text();
+  
       var LinkStart = 'https://www.premierleague.com'
       var link = LinkStart + $(element).find(".col-8-m").find("a").attr("href");
 
       // Save these results in an object that we'll push into the results array we defined earlier
       results.push({
         title: title,
+        summary: summary,
         link: link
       });
     });
@@ -125,43 +127,3 @@ app.listen(PORT, function () {
   console.log("App running on port " + PORT + "!");
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Make a request via axios to grab the HTML body from the site of your choice
-axios.get("https://www.premierleague.com/news").then(function (response) {
-
-  var $ = cheerio.load(response.data);
-
-  var results = [];
-
-  $("section.featuredArticle").each(function (i, element) {
-    var title = $(element).text();
-
-    var LinkStart = 'https://www.premierleague.com'
-    var link = LinkStart + $(element).find(".col-8-m").find("a").attr("href");
-
-
-
-    // Save these results in an object that we'll push into the results array we defined earlier
-    results.push({
-      title: title,
-      link: link
-    });
-  });
-
-  // Log the results once you've looped through each of the elements found with cheerio
-  console.log(results);
-});
